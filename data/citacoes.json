@@ -7,38 +7,48 @@
     },
     {
       "id": 2,
-      "texto": "Evil is whatever distracts.",
-      "autor": "Franz Kafka"
-    },
-    {
-      "id": 3,
       "texto": "It is not a lack of love, but a lack of friendship that makes unhappy marriages.",
       "autor": "Friedrich Nietzsche"
     },
     {
+      "id": 3,
+      "texto": "If you are lonely when you're alone, you are in bad company.",
+      "autor": "Jean-Paul Sartre"
+    },
+    {
       "id": 4,
-      "texto": "The future depends on what you do today.",
-      "autor": "Mahatma Gandhi"
+      "texto": "Correction does much, but encouragement does more.",
+      "autor": "Johann Wolfgang von Goethe"
     },
     {
       "id": 5,
-      "texto": "In the middle of difficulty lies opportunity.",
-      "autor": "Albert Einstein"
+      "texto": "What worries you, masters you.",
+      "autor": "John Locke"
     },
     {
       "id": 6,
-      "texto": "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
-      "autor": "Aristotle"
+      "texto": "Be less curious about people and more curious about ideas.",
+      "autor": "Marie Curie"
     },
     {
       "id": 7,
-      "texto": "Not all those who wander are lost.",
-      "autor": "J. R. R. Tolkien"
+      "texto": "Even if I knew that tomorrow the world would go to pieces, I would still plant my apple tree.",
+      "autor": "Martin Luther"
     },
     {
       "id": 8,
       "texto": "I know of only one duty, and that is to love.",
       "autor": "Albert Camus"
+    },
+    {
+      "id": 9,
+      "texto": "The only difference between the saint and the sinner is that every saint has a past, and every sinner has a future."
+      "author": "Oscar Wilde"
+    },
+    {
+      "id": 10,
+      "texto": "Let us remember: One book, one pen, one child, and one teacher can change the world."
+      "author": "Malala Yousafzai"
     }
   ]
 }
