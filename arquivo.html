@@ -1,1 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>Archive — Daily Quote</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #1e1a16;
+      --card: #2a231d;
+      --accent: #8b6b4f;
+      --text: #f2e9e1;
+      --muted: #c4b8ad;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Libre Baskerville", serif;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 28px 20px 18px;
+      text-align: center;
+      border-bottom: 1px solid rgba(139, 107, 79, 0.25);
+    }
+
+    header h1 {
+      margin: 0 0 18px;
+      font-family: "Playfair Display", serif;
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    nav a,
+    nav button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      padding: 5px;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover,
+    nav button:hover {
+      color: var(--text);
+    }
+
+    main {
+      width: min(800px, calc(100% - 32px));
+      margin: 50px auto;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+    }
+
+    /* =========================
+       CALENDAR
+       ========================= */
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .calendar-header h2 {
+      margin: 0;
+      font-family: "Playfair Display", serif;
+      font-size: 1.8rem;
+      font-weight: 500;
+    }
+
+    .month-button {
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--accent);
+      background: transparent;
+      color: var(--text);
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .month-button:hover {
+      background: var(--accent);
+    }
+
+    .month-button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .weekdays,
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .weekday {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.72rem;
+      padding-bottom: 8px;
+    }
+
+    .day {
+      min-height: 72px;
+      border: 1px solid rgba(139, 107, 79, 0.22);
+      border-radius: 8px;
+      background: rgba(30, 26, 22, 0.35);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Playfair Display", serif;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .day:hover {
+      border-color: var(--accent);
+      background: rgba(139, 107, 79, 0.18);
+    }
+
+    .day.empty {
+      border: none;
+      background: transparent;
+      cursor: default;
+    }
+
+    .day.future {
+      opacity: 0.2;
+      cursor: not-allowed;
+    }
+
+    .day.today {
+      border: 1px solid var(--accent);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+
+    .day.selected {
+      background: var(--accent);
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    /* =========================
+       QUOTE
+       ========================= */
+
+    #quoteCard {
+      margin-top: 25px;
+      display: none;
+    }
+
+    #quoteCard.visible {
+      display: block;
+    }
+
+    .selected-date {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-bottom: 24px;
+    }
+
+    .quote {
+      font-family: "Playfair Display", serif;
+      font-size: 1.5rem;
+      line-height: 1.7;
+      text-align: center;
+      margin: 0;
+    }
+
+    .author {
+      margin-top: 22px;
+      text-align: right;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      border: 1px solid var(--accent);
+      color: var(--text);
+      background: transparent;
+      border-radius: 20px;
+      padding: 9px 18px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .button:hover {
+      background: var(--accent);
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      padding: 25px 20px 35px;
+    }
+
+    .loading {
+      text-align: center;
+      color: var(--muted);
+      padding: 20px;
+    }
+
+    @media (max-width: 600px) {
+
+      header h1 {
+        font-size: 1.9rem;
+      }
+
+      nav {
+        gap: 10px;
+      }
+
+      main {
+        margin-top: 35px;
+      }
+
+      .card {
+        padding: 22px 16px;
+      }
+
+      .calendar-header h2 {
+        font-size: 1.5rem;
+      }
+
+      .weekdays,
+      .calendar {
+        gap: 5px;
+      }
+
+      .day {
+        min-height: 52px;
+        font-size: 0.9rem;
+      }
+
+      .quote {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <h1>Daily Quote</h1>
+
+  <nav>
+    <a href="index.html">Today</a>
+
+    <a href="arquivo.html">Archive</a>
+
+    <a href="index.html#favorites">Favorites</a>
+
+    <a href="index.html#about">About</a>
+  </nav>
+
+</header>
+
+
+<main>
+
+  <!-- CALENDAR -->
+
+  <div class="card">
+
+    <div class="calendar-header">
+
+      <button
+        id="previousMonth"
+        class="month-button"
+        aria-label="Previous month"
+      >
+        ‹
+      </button>
+
+      <h2 id="monthTitle">
+        Loading...
+      </h2>
+
+      <button
+        id="nextMonth"
+        class="month-button"
+        aria-label="Next month"
+      >
+        ›
+      </button>
+
+    </div>
+
+
+    <div class="weekdays">
+
+      <div class="weekday">Sun</div>
+      <div class="weekday">Mon</div>
+      <div class="weekday">Tue</div>
+      <div class="weekday">Wed</div>
+      <div class="weekday">Thu</div>
+      <div class="weekday">Fri</div>
+      <div class="weekday">Sat</div>
+
+    </div>
+
+
+    <div id="calendar" class="calendar">
+      <div class="loading">
+        Loading...
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- SELECTED QUOTE -->
+
+  <div id="quoteCard" class="card">
+
+    <div id="selectedDate" class="selected-date"></div>
+
+    <p id="quoteText" class="quote"></p>
+
+    <p id="quoteAuthor" class="author"></p>
+
+    <div class="actions">
+
+      <button
+        id="saveButton"
+        class="button"
+      >
+        ♡ Save
+      </button>
+
+      <button
+        id="shareButton"
+        class="button"
+      >
+        Share
+      </button>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer>
+  © 2026 — Daily Quote
+</footer>
+
+
+<script type="module">
+
+  import { createClient }
+    from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
+  /* ================================
+     SUPABASE
+     ================================ */
+
+  const SUPABASE_URL =
+    "https://ciztjrqcejpeywanimjn.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_Bm9MIE6HZ9jREJggeJWf5Q_G-w7Wb5W";
+
+  const supabase =
+    createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
+
+  /* ================================
+     SETTINGS
+     ================================ */
+
+  /*
+     Change this date if you want the
+     archive to start on another day.
+
+     January = 0
+     February = 1
+     March = 2
+     ...
+     December = 11
+  */
+
+  const START_DATE =
+    new Date(2026, 0, 1);
+
+
+  /* ================================
+     VARIABLES
+     ================================ */
+
+  let quotes = [];
+
+  let currentUser = null;
+
+  let currentMonth =
+    new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      1
+    );
+
+  let selectedDate = null;
+
+  let selectedQuote = null;
+
+
+  /* ================================
+     LOAD QUOTES
+     ================================ */
+
+  async function loadQuotes() {
+
+    try {
+
+      const response =
+        await fetch("./data/citacoes.json");
+
+      if (!response.ok) {
+        throw new Error(
+          "Could not load citacoes.json"
+        );
+      }
+
+      const data =
+        await response.json();
+
+      quotes =
+        data.citacoes || [];
+
+      if (!quotes.length) {
+        throw new Error(
+          "No quotes found."
+        );
+      }
+
+      renderCalendar();
+
+    } catch (error) {
+
+      console.error(error);
+
+      document.getElementById("calendar")
+        .innerHTML = `
+          <div class="loading">
+            Could not load the quotes.
+          </div>
+        `;
+
+    }
+
+  }
+
+
+  /* ================================
+     QUOTE INDEX
+     ================================ */
+
+  function getQuoteIndex(date) {
+
+    const seed =
+      date.getFullYear() * 10000 +
+      (date.getMonth() + 1) * 100 +
+      date.getDate();
+
+    return seed % quotes.length;
+
+  }
+
+
+  /* ================================
+     GET QUOTE FOR DATE
+     ================================ */
+
+  function getQuoteForDate(date) {
+
+    const index =
+      getQuoteIndex(date);
+
+    return quotes[index];
+
+  }
+
+
+  /* ================================
+     DATE HELPERS
+     ================================ */
+
+  function dateOnly(date) {
+
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    );
+
+  }
+
+
+  function isBeforeStartDate(date) {
+
+    return dateOnly(date) < dateOnly(START_DATE);
+
+  }
+
+
+  function isFuture(date) {
+
+    const today =
+      dateOnly(new Date());
+
+    return dateOnly(date) > today;
+
+  }
+
+
+  function isToday(date) {
+
+    const today =
+      dateOnly(new Date());
+
+    return dateOnly(date).getTime() ===
+      today.getTime();
+
+  }
+
+
+  /* ================================
+     CALENDAR
+     ================================ */
+
+  function renderCalendar() {
+
+    if (!quotes.length) return;
+
+
+    const year =
+      currentMonth.getFullYear();
+
+    const month =
+      currentMonth.getMonth();
+
+
+    const monthTitle =
+      document.getElementById(
+        "monthTitle"
+      );
+
+
+    monthTitle.textContent =
+      currentMonth.toLocaleDateString(
+        "en-US",
+        {
+          month: "long",
+          year: "numeric"
+        }
+      );
+
+
+    const calendar =
+      document.getElementById(
+        "calendar"
+      );
+
+
+    calendar.innerHTML = "";
+
+
+    /*
+       JavaScript gives Sunday = 0,
+       Monday = 1, etc.
+    */
+
+    const firstDay =
+      new Date(
+        year,
+        month,
+        1
+      ).getDay();
+
+
+    const daysInMonth =
+      new Date(
+        year,
+        month + 1,
+        0
+      ).getDate();
+
+
+    /* Empty spaces before day 1 */
+
+    for (
+      let i = 0;
+      i < firstDay;
+      i++
+    ) {
+
+      const empty =
+        document.createElement("div");
+
+      empty.className =
+        "day empty";
+
+      calendar.appendChild(empty);
+
+    }
+
+
+    /* Days */
+
+    for (
+      let day = 1;
+      day <= daysInMonth;
+      day++
+    ) {
+
+      const date =
+        new Date(
+          year,
+          month,
+          day
+        );
+
+
+      const dayElement =
+        document.createElement("button");
+
+      dayElement.className =
+        "day";
+
+
+      dayElement.textContent =
+        day;
+
+
+      if (
+        isBeforeStartDate(date)
+      ) {
+
+        dayElement.classList.add(
+          "future"
+        );
+
+        dayElement.disabled = true;
+
+      }
+
+
+      if (
+        isFuture(date)
+      ) {
+
+        dayElement.classList.add(
+          "future"
+        );
+
+        dayElement.disabled = true;
+
+      }
+
+
+      if (
+        isToday(date)
+      ) {
+
+        dayElement.classList.add(
+          "today"
+        );
+
+      }
+
+
+      if (
+        selectedDate &&
+        dateOnly(selectedDate).getTime() ===
+        dateOnly(date).getTime()
+      ) {
+
+        dayElement.classList.add(
+          "selected"
+        );
+
+      }
+
+
+      if (
+        !isBeforeStartDate(date) &&
+        !isFuture(date)
+      ) {
+
+        dayElement.addEventListener(
+          "click",
+          () => selectDate(date)
+        );
+
+      }
+
+
+      calendar.appendChild(
+        dayElement
+      );
+
+    }
+
+
+    updateMonthButtons();
+
+  }
+
+
+  /* ================================
+     MONTH NAVIGATION
+     ================================ */
+
+  function updateMonthButtons() {
+
+    const previousButton =
+      document.getElementById(
+        "previousMonth"
+      );
+
+    const nextButton =
+      document.getElementById(
+        "nextMonth"
+      );
+
+
+    const firstAvailableMonth =
+      new Date(
+        START_DATE.getFullYear(),
+        START_DATE.getMonth(),
+        1
+      );
+
+
+    const currentMonthStart =
+      new Date(
+        currentMonth.getFullYear(),
+        currentMonth.getMonth(),
+        1
+      );
+
+
+    const today =
+      new Date();
+
+
+    const currentRealMonth =
+      new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        1
+      );
+
+
+    previousButton.disabled =
+      currentMonthStart <=
+      firstAvailableMonth;
+
+
+    nextButton.disabled =
+      currentMonthStart >=
+      currentRealMonth;
+
+  }
+
+
+  document
+    .getElementById("previousMonth")
+    .addEventListener(
+      "click",
+      () => {
+
+        currentMonth =
+          new Date(
+            currentMonth.getFullYear(),
+            currentMonth.getMonth() - 1,
+            1
+          );
+
+        renderCalendar();
+
+      }
+    );
+
+
+  document
+    .getElementById("nextMonth")
+    .addEventListener(
+      "click",
+      () => {
+
+        currentMonth =
+          new Date(
+            currentMonth.getFullYear(),
+            currentMonth.getMonth() + 1,
+            1
+          );
+
+        renderCalendar();
+
+      }
+    );
+
+
+  /* ================================
+     SELECT DATE
+     ================================ */
+
+  function selectDate(date) {
+
+    selectedDate =
+      date;
+
+    selectedQuote =
+      getQuoteForDate(date);
+
+
+    document
+      .getElementById("quoteCard")
+      .classList.add("visible");
+
+
+    document
+      .getElementById("selectedDate")
+      .textContent =
+      date.toLocaleDateString(
+        "en-US",
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        }
+      );
+
+
+    document
+      .getElementById("quoteText")
+      .textContent =
+      `“${selectedQuote.texto}”`;
+
+
+    document
+      .getElementById("quoteAuthor")
+      .textContent =
+      `— ${selectedQuote.autor}`;
+
+
+    renderCalendar();
+
+
+    document
+      .getElementById("quoteCard")
+      .scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+  }
+
+
+  /* ================================
+     SAVE
+     ================================ */
+
+  document
+    .getElementById("saveButton")
+    .addEventListener(
+      "click",
+      async () => {
+
+        if (!selectedQuote) return;
+
+
+        if (!currentUser) {
+
+          alert(
+            "Please sign in first to save quotes."
+          );
+
+          window.location.href =
+            "index.html";
+
+          return;
+        }
+
+
+        const { error } =
+          await supabase
+            .from("saved_quotes")
+            .upsert(
+              {
+                user_id:
+                  currentUser.id,
+
+                quote_id:
+                  selectedQuote.id
+              },
+              {
+                onConflict:
+                  "user_id,quote_id"
+              }
+            );
+
+
+        if (error) {
+
+          console.error(error);
+
+          alert(
+            "Could not save the quote.\n\n" +
+            error.message
+          );
+
+          return;
+        }
+
+
+        alert(
+          "Quote saved to your favorites. ♥"
+        );
+
+      }
+    );
+
+
+  /* ================================
+     SHARE
+     ================================ */
+
+  document
+    .getElementById("shareButton")
+    .addEventListener(
+      "click",
+      async () => {
+
+        if (!selectedQuote) return;
+
+
+        const text =
+          `“${selectedQuote.texto}” — ${selectedQuote.autor}`;
+
+
+        if (navigator.share) {
+
+          try {
+
+            await navigator.share({
+              title: "Daily Quote",
+              text: text
+            });
+
+          } catch (error) {
+
+            console.log(
+              "Share cancelled."
+            );
+
+          }
+
+          return;
+
+        }
+
+
+        try {
+
+          await navigator.clipboard
+            .writeText(text);
+
+          alert(
+            "Quote copied to clipboard."
+          );
+
+        } catch (error) {
+
+          alert(text);
+
+        }
+
+      }
+    );
+
+
+  /* ================================
+     AUTH
+     ================================ */
+
+  supabase.auth
+    .getSession()
+    .then(({ data }) => {
+
+      currentUser =
+        data.session?.user || null;
+
+    });
+
+
+  supabase.auth.onAuthStateChange(
+    (_event, session) => {
+
+      currentUser =
+        session?.user || null;
+
+    }
+  );
+
+
+  /* ================================
+     START
+     ================================ */
+
+  loadQuotes();
+
+</script>
+
+</body>
+</html>
