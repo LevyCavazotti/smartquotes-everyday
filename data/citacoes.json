@@ -7,8 +7,33 @@
     },
     {
       "id": 2,
-      "texto": "It is never too late to be what you might have been.",
-      "autor": "George Eliot"
+      "texto": "It always seems impossible until it's done.",
+      "autor": "Nelson Mandela"
+    },
+    {
+      "id": 3,
+      "texto": "What you seek is seeking you.",
+      "autor": "Rumi"
+    },
+    {
+      "id": 4,
+      "texto": "The future depends on what you do today.",
+      "autor": "Mahatma Gandhi"
+    },
+    {
+      "id": 5,
+      "texto": "In the middle of difficulty lies opportunity.",
+      "autor": "Albert Einstein"
+    },
+    {
+      "id": 6,
+      "texto": "We are what we repeatedly do. Excellence, then, is not an act, but a habit.",
+      "autor": "Aristotle"
+    },
+    {
+      "id": 7,
+      "texto": "Not all those who wander are lost.",
+      "autor": "J. R. R. Tolkien"
     }
   ]
 }
