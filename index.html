@@ -737,45 +737,50 @@
      SHARE
      ================================ */
 
-  window.shareQuote = async function() {
+window.shareQuote = async function() {
 
-    if (!todayQuote) return;
+  if (!todayQuote) return;
 
+  const text =
+    `“${todayQuote.texto}” — ${todayQuote.autor}`;
 
-    const text =
-      `“${todayQuote.texto}” — ${todayQuote.autor}`;
+  const url =
+    "https://levycavazotti.github.io/smartquotes-everyday/";
 
-
-    if (navigator.share) {
-
-      try {
-
-        await navigator.share({
-          title: "Daily Quote",
-          text: text
-        });
-
-      } catch (error) {
-        console.log("Share cancelled.");
-      }
-
-      return;
-    }
-
+  if (navigator.share) {
 
     try {
 
-      await navigator.clipboard.writeText(text);
-
-      alert("Quote copied to clipboard.");
+      await navigator.share({
+        title: "Daily Quote",
+        text: text,
+        url: url
+      });
 
     } catch (error) {
 
-      alert(text);
+      console.log("Share cancelled.");
 
     }
 
-  };
+    return;
+  }
+
+  try {
+
+    await navigator.clipboard.writeText(
+      `${text}\n\n${url}`
+    );
+
+    alert("Quote and link copied to clipboard.");
+
+  } catch (error) {
+
+    alert(`${text}\n\n${url}`);
+
+  }
+
+};
 
 
   /* ================================
