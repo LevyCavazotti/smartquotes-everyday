@@ -49,6 +49,21 @@
       "id": 10,
       "texto": "Let us remember: One book, one pen, one child, and one teacher can change the world.",
       "autor": "Malala Yousafzai"
+    },
+    {
+      "id": 11,
+      "texto": "You have to take risks. We will only understand the miracle of life fully when we allow the unexpected to happen.",
+      "autor": "Paulo Coelho"
+    },
+    {
+      "id": 12,
+      "texto": "Some people go to priests; others to poetry; I to my friends.",
+      "autor": "Virginia Woolf"
+    },
+    {
+      "id": 13,
+      "texto": "The greatest minds are capable of the greatest vices as well as of the greatest virtues.",
+      "autor": "Rene Descartes"
     }
   ]
 }
