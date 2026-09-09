@@ -1,1 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>Daily Quote</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #1e1a16;
+      --card: #2a231d;
+      --accent: #8b6b4f;
+      --text: #f2e9e1;
+      --muted: #c4b8ad;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Libre Baskerville", serif;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 28px 20px 18px;
+      text-align: center;
+      border-bottom: 1px solid rgba(139, 107, 79, 0.25);
+    }
+
+    header h1 {
+      margin: 0 0 18px;
+      font-family: "Playfair Display", serif;
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    nav a,
+    nav button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+      padding: 5px;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover,
+    nav button:hover {
+      color: var(--text);
+    }
+
+    #authArea {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    main {
+      width: min(800px, calc(100% - 32px));
+      margin: 50px auto;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 42px 38px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+    }
+
+    .quote {
+      font-family: "Playfair Display", serif;
+      font-size: 1.6rem;
+      line-height: 1.7;
+      text-align: center;
+      margin: 0;
+    }
+
+    .author {
+      margin-top: 25px;
+      text-align: right;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .button {
+      border: 1px solid var(--accent);
+      color: var(--text);
+      background: transparent;
+      border-radius: 20px;
+      padding: 9px 18px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .button:hover {
+      background: var(--accent);
+    }
+
+    .button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .intro {
+      color: var(--muted);
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .favorite-item {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
+    }
+
+    .favorite-item .quote {
+      font-size: 1.25rem;
+      text-align: left;
+    }
+
+    .favorite-item .author {
+      margin-top: 15px;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 30px 0;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+      padding: 25px 20px 35px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.9rem;
+      }
+
+      nav {
+        gap: 10px;
+      }
+
+      main {
+        margin-top: 35px;
+      }
+
+      .card {
+        padding: 30px 22px;
+      }
+
+      .quote {
+        font-size: 1.35rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Daily Quote</h1>
+
+  <nav>
+    <a href="#" onclick="showSection('today'); return false;">Today</a>
+
+    <a href="arquivo.html">Archive</a>
+
+    <a href="#" onclick="showSection('favorites'); return false;">Favorites</a>
+
+    <a href="#" onclick="showSection('about'); return false;">About</a>
+
+    <span id="authArea"></span>
+  </nav>
+</header>
+
+<main>
+
+  <!-- TODAY -->
+  <section id="today" class="section active">
+
+    <div class="card">
+
+      <p id="quoteText" class="quote">
+        Loading...
+      </p>
+
+      <p id="quoteAuthor" class="author"></p>
+
+      <div class="actions">
+
+        <button class="button" onclick="saveQuote()">
+          ♡ Save
+        </button>
+
+        <button class="button" onclick="shareQuote()">
+          Share
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FAVORITES -->
+  <section id="favorites" class="section">
+
+    <div id="favoritesContent">
+
+      <div class="card">
+        <p class="empty">
+          Loading favorites...
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+
+    <div class="card">
+
+      <p class="intro">
+        Daily Quote is a simple place to discover a thoughtful
+        quotation every day.
+      </p>
+
+      <p class="intro">
+        Come back tomorrow for a new quote.
+      </p>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  © 2026 — Daily Quote
+</footer>
+
+
+<script type="module">
+
+  import { createClient }
+    from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+
+  /* ================================
+     SUPABASE
+     ================================ */
+
+  const SUPABASE_URL =
+    "https://ciztjrqcejpeywanimjn.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_Bm9MIE6HZ9jREJggeJWf5Q_G-w7Wb5W";
+
+  const supabase =
+    createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
+  /* ================================
+     DATA
+     ================================ */
+
+  let quotes = [];
+  let todayQuote = null;
+  let currentUser = null;
+
+
+  /* ================================
+     LOAD QUOTES
+     ================================ */
+
+  async function loadQuotes() {
+
+    try {
+
+      const response =
+        await fetch("./data/citacoes.json");
+
+      if (!response.ok) {
+        throw new Error("Could not load citacoes.json");
+      }
+
+      const data = await response.json();
+
+      quotes = data.citacoes || [];
+
+      if (!quotes.length) {
+        throw new Error("No quotes found.");
+      }
+
+      loadTodayQuote();
+
+    } catch (error) {
+
+      console.error(error);
+
+      document.getElementById("quoteText").textContent =
+        "Could not load today's quote.";
+
+      document.getElementById("quoteAuthor").textContent = "";
+
+    }
+
+  }
+
+
+  /* ================================
+     DAILY QUOTE
+     ================================ */
+
+  function getQuoteIndex(date) {
+
+    const seed =
+      date.getFullYear() * 10000 +
+      (date.getMonth() + 1) * 100 +
+      date.getDate();
+
+    return seed % quotes.length;
+
+  }
+
+
+  function loadTodayQuote() {
+
+    const today = new Date();
+
+    const index =
+      getQuoteIndex(today);
+
+    todayQuote =
+      quotes[index];
+
+    document.getElementById("quoteText").textContent =
+      `“${todayQuote.texto}”`;
+
+    document.getElementById("quoteAuthor").textContent =
+      `— ${todayQuote.autor}`;
+
+  }
+
+
+  /* ================================
+     SECTIONS
+     ================================ */
+
+  window.showSection = function(sectionName) {
+
+    document
+      .querySelectorAll(".section")
+      .forEach(section => {
+        section.classList.remove("active");
+      });
+
+    const section =
+      document.getElementById(sectionName);
+
+    if (section) {
+      section.classList.add("active");
+    }
+
+    if (sectionName === "favorites") {
+      loadFavorites();
+    }
+
+  };
+
+
+  /* ================================
+     AUTH UI
+     ================================ */
+
+  function renderAuth() {
+
+    const authArea =
+      document.getElementById("authArea");
+
+    if (currentUser) {
+
+      authArea.innerHTML = `
+        <button onclick="logout()">Sign out</button>
+      `;
+
+    } else {
+
+      authArea.innerHTML = `
+        <button onclick="login()">Sign in</button>
+      `;
+
+    }
+
+  }
+
+
+  /* ================================
+     LOGIN
+     ================================ */
+
+  window.login = async function() {
+
+    const email =
+      prompt("Enter your email:");
+
+    if (!email) return;
+
+    const redirectTo =
+      window.location.href.split("#")[0];
+
+    const { error } =
+      await supabase.auth.signInWithOtp({
+
+        email: email.trim(),
+
+        options: {
+          emailRedirectTo: redirectTo
+        }
+
+      });
+
+
+    if (error) {
+
+      console.error(error);
+
+      alert(
+        "Could not send the login email.\n\n" +
+        error.message
+      );
+
+      return;
+    }
+
+
+    alert(
+      "Check your email. " +
+      "We sent you a magic link to sign in."
+    );
+
+  };
+
+
+  /* ================================
+     LOGOUT
+     ================================ */
+
+  window.logout = async function() {
+
+    const { error } =
+      await supabase.auth.signOut();
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    currentUser = null;
+
+    renderAuth();
+
+    loadFavorites();
+
+  };
+
+
+  /* ================================
+     SAVE FAVORITE
+     ================================ */
+
+  window.saveQuote = async function() {
+
+    if (!todayQuote) return;
+
+
+    if (!currentUser) {
+
+      alert(
+        "Please sign in first to save quotes."
+      );
+
+      await login();
+
+      return;
+    }
+
+
+    const { error } =
+      await supabase
+        .from("saved_quotes")
+        .upsert(
+          {
+            user_id: currentUser.id,
+            quote_id: todayQuote.id
+          },
+          {
+            onConflict: "user_id,quote_id"
+          }
+        );
+
+
+    if (error) {
+
+      console.error(error);
+
+      alert(
+        "Could not save the quote.\n\n" +
+        error.message
+      );
+
+      return;
+    }
+
+
+    alert("Quote saved to your favorites. ♥");
+
+  };
+
+
+  /* ================================
+     LOAD FAVORITES
+     ================================ */
+
+  async function loadFavorites() {
+
+    const container =
+      document.getElementById("favoritesContent");
+
+
+    if (!currentUser) {
+
+      container.innerHTML = `
+        <div class="card">
+          <p class="empty">
+            Sign in to see your favorite quotes.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML = `
+      <div class="card">
+        <p class="empty">
+          Loading favorites...
+        </p>
+      </div>
+    `;
+
+
+    const { data, error } =
+      await supabase
+        .from("saved_quotes")
+        .select("quote_id, created_at")
+        .eq("user_id", currentUser.id)
+        .order("created_at", {
+          ascending: false
+        });
+
+
+    if (error) {
+
+      console.error(error);
+
+      container.innerHTML = `
+        <div class="card">
+          <p class="empty">
+            Could not load favorites.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    if (!data.length) {
+
+      container.innerHTML = `
+        <div class="card">
+          <p class="empty">
+            You haven't saved any quotes yet.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    data.forEach(saved => {
+
+      const quote =
+        quotes.find(
+          q => Number(q.id) === Number(saved.quote_id)
+        );
+
+
+      if (!quote) return;
+
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "favorite-item";
+
+
+      item.innerHTML = `
+
+        <p class="quote">
+          “${escapeHtml(quote.texto)}”
+        </p>
+
+        <p class="author">
+          — ${escapeHtml(quote.autor)}
+        </p>
+
+        <div class="actions">
+
+          <button
+            class="button"
+            data-id="${quote.id}">
+            Remove
+          </button>
+
+        </div>
+
+      `;
+
+
+      item
+        .querySelector("button")
+        .addEventListener("click", () =>
+          removeFavorite(quote.id)
+        );
+
+
+      container.appendChild(item);
+
+    });
+
+  }
+
+
+  /* ================================
+     REMOVE FAVORITE
+     ================================ */
+
+  async function removeFavorite(quoteId) {
+
+    if (!currentUser) return;
+
+
+    const { error } =
+      await supabase
+        .from("saved_quotes")
+        .delete()
+        .eq("user_id", currentUser.id)
+        .eq("quote_id", quoteId);
+
+
+    if (error) {
+
+      console.error(error);
+
+      alert(
+        "Could not remove the quote."
+      );
+
+      return;
+    }
+
+
+    loadFavorites();
+
+  }
+
+
+  /* ================================
+     SHARE
+     ================================ */
+
+  window.shareQuote = async function() {
+
+    if (!todayQuote) return;
+
+
+    const text =
+      `“${todayQuote.texto}” — ${todayQuote.autor}`;
+
+
+    if (navigator.share) {
+
+      try {
+
+        await navigator.share({
+          title: "Daily Quote",
+          text: text
+        });
+
+      } catch (error) {
+        console.log("Share cancelled.");
+      }
+
+      return;
+    }
+
+
+    try {
+
+      await navigator.clipboard.writeText(text);
+
+      alert("Quote copied to clipboard.");
+
+    } catch (error) {
+
+      alert(text);
+
+    }
+
+  };
+
+
+  /* ================================
+     ESCAPE HTML
+     ================================ */
+
+  function escapeHtml(value) {
+
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  }
+
+
+  /* ================================
+     AUTH STATE
+     ================================ */
+
+  supabase.auth.getSession()
+    .then(({ data }) => {
+
+      currentUser =
+        data.session?.user || null;
+
+      renderAuth();
+
+    });
+
+
+  supabase.auth.onAuthStateChange(
+    (_event, session) => {
+
+      currentUser =
+        session?.user || null;
+
+      renderAuth();
+
+      if (
+        document
+          .getElementById("favorites")
+          .classList
+          .contains("active")
+      ) {
+        loadFavorites();
+      }
+
+    }
+  );
+
+
+  /* ================================
+     START
+     ================================ */
+
+  loadQuotes();
+
+</script>
+
+</body>
+</html>
