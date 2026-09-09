@@ -34,6 +34,11 @@
       "id": 7,
       "texto": "Not all those who wander are lost.",
       "autor": "J. R. R. Tolkien"
+    },
+    {
+      "id": 8,
+      "texto": "I know of only one duty, and that is to love.",
+      "autor": "Albert Camus"
     }
   ]
 }
