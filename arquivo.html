@@ -989,57 +989,56 @@
      ================================ */
 
   document
-    .getElementById("shareButton")
-    .addEventListener(
-      "click",
-      async () => {
+  .getElementById("shareButton")
+  .addEventListener(
+    "click",
+    async () => {
 
-        if (!selectedQuote) return;
+      if (!selectedQuote) return;
 
+      const text =
+        `“${selectedQuote.texto}” — ${selectedQuote.autor}`;
 
-        const text =
-          `“${selectedQuote.texto}” — ${selectedQuote.autor}`;
+      const url =
+        "https://levycavazotti.github.io/smartquotes-everyday/";
 
-
-        if (navigator.share) {
-
-          try {
-
-            await navigator.share({
-              title: "Daily Quote",
-              text: text
-            });
-
-          } catch (error) {
-
-            console.log(
-              "Share cancelled."
-            );
-
-          }
-
-          return;
-
-        }
-
+      if (navigator.share) {
 
         try {
 
-          await navigator.clipboard
-            .writeText(text);
-
-          alert(
-            "Quote copied to clipboard."
-          );
+          await navigator.share({
+            title: "Daily Quote",
+            text: text,
+            url: url
+          });
 
         } catch (error) {
 
-          alert(text);
+          console.log("Share cancelled.");
 
         }
 
+        return;
       }
-    );
+
+      try {
+
+        await navigator.clipboard.writeText(
+          `${text}\n\n${url}`
+        );
+
+        alert(
+          "Quote and link copied to clipboard."
+        );
+
+      } catch (error) {
+
+        alert(`${text}\n\n${url}`);
+
+      }
+
+    }
+  );
 
 
   /* ================================
