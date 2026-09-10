@@ -64,6 +64,46 @@
       "id": 13,
       "texto": "The greatest minds are capable of the greatest vices as well as of the greatest virtues.",
       "autor": "Rene Descartes"
+    },
+    {
+      "id": 14,
+      "texto": "Carry out a random act of kindness, with no expectation of reward, safe in the knowledge that one day someone might do the same for you.",
+      "autor": "Princess Diana"
+    },
+    {
+      "id": 15,
+      "texto": "God cannot give us a happiness and peace apart from Himself, because it is not there. There is no such thing.",
+      "autor": "C. S. Lewis"
+    },
+    {
+      "id": 16,
+      "texto": "Patience is bitter, but its fruit is sweet.",
+      "autor": "Jean-Jacques Rousseau"
+    },
+    {
+      "id": 17,
+      "texto": "There is nothing like staying at home for real comfort.",
+      "autor": "Jane Austen"
+    },
+    {
+      "id": 18,
+      "texto": "Everyone thinks of changing the world, but no one thinks of changing himself.",
+      "autor": "Leo Tolstoy"
+    },
+    {
+      "id": 19,
+      "texto": "Whatever our souls are made of, his and mine are the same.",
+      "autor": "Emily Brontë"
+    },
+    {
+      "id": 20,
+      "texto": "The world of reality has its limits; the world of imagination is boundless.",
+      "autor": "Jean-Jacques Rousseau"
+    },
+    {
+      "id": 21,
+      "texto": "No one is useless in this world who lightens the burden of it to anyone else.",
+      "autor": "Charles Dickens"
     }
   ]
 }
